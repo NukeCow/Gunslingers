@@ -21,7 +21,6 @@ public class PMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-		//isGrounded = Physics.CheckBox(groundCheck.position, groundCheckSize, groundCheck.rotation, groundMask);
 		isGrounded = Physics.CheckCapsule(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckHeight, groundCheck.position.z), groundCheckRadius, groundMask);
 		if (isGrounded && velocity.y < 0) velocity.y = -2f;
 
@@ -29,7 +28,7 @@ public class PMovement : MonoBehaviour
 		float _vertical = Input.GetAxisRaw("Vertical");
 		Vector3 _direction = new Vector3(_horizontal, 0f, _vertical).normalized;
 
-		if(_direction.magnitude >= 0.1f && isGrounded)
+		if(_direction.magnitude >= 0.1f)
 		{
 			float _trgtAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + pCam.eulerAngles.y;
 			float _angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _trgtAngle, ref turnSmoothVelocity, turnSmoothing);

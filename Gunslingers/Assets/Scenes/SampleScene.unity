@@ -176,7 +176,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
-  groundCheckHeight: 0.4
+  groundCheckHeight: 0.01
   groundCheckRadius: 0.5
   pController: {fileID: 27652667}
   pCam: {fileID: 963194228}
