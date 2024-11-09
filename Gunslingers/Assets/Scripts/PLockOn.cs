@@ -12,11 +12,13 @@ public class PLockOn : MonoBehaviour
     [SerializeField] float targetMaxViewAngle; //The maximum angle from the player a potential target can be to be considered a valid lock on target.
     [SerializeField] float targetMaxDist; //The maximum distance a lock on target can be from the player.
     [SerializeField] LayerMask targetCheckMask; //The layer the sphere used to find lock on targets will check. Filters out unnecessary colliders.
+    [SerializeField] LayerMask targetRayMask; //The layer the raycast to a potential target will check for obstacles. Filters out unnecessary colliders.
     bool isLockedOn = false; //Is the player already locked on to an enemy?
 
     [Header("Object References")]
     [SerializeField] GameObject pObject; //Reference to the player game object
     [SerializeField] GameObject pCam; //Reference to the player's camera game object
+    [SerializeField] GameObject pGFX; //Reference to the player's graphics game object
 
     // Update is called once per frame
     void Update()
@@ -32,7 +34,7 @@ public class PLockOn : MonoBehaviour
 			}
 			else
 			{
-                //Lock On
+                FindLockTargets();
 			}
 		}
     }
@@ -47,18 +49,30 @@ public class PLockOn : MonoBehaviour
         Collider[] _colliders = Physics.OverlapSphere(pObject.transform.position, targetCheckRadius, targetCheckMask);
         for (int i = 0; i < _colliders.Length; i++)
 		{
-            GameObject _target = _colliders[i].gameObject;
+            CharacterController _target = _colliders[i].GetComponent<CharacterController>();
 
-            Vector3 _targetDir = _target.transform.position - pObject.transform.position;
-            float _targetDist = Vector3.Distance(pObject.transform.position, _target.transform.position);
-            float _targetViewAngle = Vector3.Angle(_targetDir, pCam.transform.forward);
-
-            //If target is dead, continue
-            if (_targetDist > targetMaxDist) continue;
-            if(_targetViewAngle >= targetMinViewAngle && _targetViewAngle <= targetMaxViewAngle)
+            if(_target != null)
 			{
+                Vector3 _targetDir = _target.transform.position - pObject.transform.position;
+                float _targetDist = Vector3.Distance(pObject.transform.position, _target.transform.position);
+                float _targetViewAngle = Vector3.Angle(_targetDir, pCam.transform.forward);
 
-			}
+                //If target is dead, continue
+                if (_targetDist > targetMaxDist) continue;
+                if (_targetViewAngle >= targetMinViewAngle && _targetViewAngle <= targetMaxViewAngle)
+                {
+                    RaycastHit _hit;
+
+                    if (Physics.Linecast(pGFX.transform.position, _target.transform.position, out _hit, targetRayMask))
+					{
+                        continue;
+					}
+					else
+					{
+                        Debug.Log("Target Acquired HAHAHAHAHAHAHHAHAHA!");
+					}
+                }
+            }
 		}
         //If not locked on, lock on to closest target
         //If locked on, find closest target to left or right of current target and lock on to that target
