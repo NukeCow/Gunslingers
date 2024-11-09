@@ -58,7 +58,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\PMovement.cs" />
-    <Compile Include="Assets\Scripts\LockOn.cs" />
+    <Compile Include="Assets\Scripts\PLockOn.cs" />
+    <Compile Include="Assets\Scripts\PControlManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ThirdPartyPackages\DevTex\readme.txt" />
