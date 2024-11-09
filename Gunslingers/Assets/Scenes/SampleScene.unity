@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e030f0b4685e8469d8a9d4a75cb7a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonLockOn: mouse 2
+  buttonLockOn: 2
 --- !u!114 &27652669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5958,7 +5958,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1877563438}
-  m_LocalRotation: {x: 0.014034189, y: -0.1974661, z: 0.0028272718, w: 0.9802052}
+  m_LocalRotation: {x: 0.014034208, y: -0.19746616, z: 0.0028272793, w: 0.9802052}
   m_LocalPosition: {x: 0.00000007647396, y: 0.00000093299946, z: -0.00000018209468}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
