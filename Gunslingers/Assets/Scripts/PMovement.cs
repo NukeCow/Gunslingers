@@ -17,6 +17,7 @@ public class PMovement : MonoBehaviour
 	public float speedDodge; //How fast the player moves when dodging
 	public float dodgeKeyHoldTime; //Time, in seconds, the player must hold down the dodge key to start sprinting
 	public float speedSprint; //How fast the player moves when sprinting
+	bool isSprinting = false; //Is the player sprinting?
     
     [SerializeField] CharacterController pController; //Reference to the player's Character Controller component
 	[SerializeField] Transform pCam; //Reference to the player's camera's transform component
@@ -33,16 +34,19 @@ public class PMovement : MonoBehaviour
 		float _vertical = Input.GetAxisRaw("Vertical");
 		Vector3 _direction = new Vector3(_horizontal, 0f, _vertical).normalized;
 
+		if (Input.GetKeyDown(keyDodge)) StartCoroutine(DodgeKeyHoldTime(dodgeKeyHoldTime, _direction));
+		if (Input.GetKeyUp(keyDodge)) isSprinting = false;
+
 		if(_direction.magnitude >= 0.1f)
 		{
-			float _trgtAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + pCam.eulerAngles.y;
-			float _angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _trgtAngle, ref turnSmoothVelocity, turnSmoothing);
-			transform.rotation = Quaternion.Euler(0f, _angle, 0f);
-
-			Vector3 _faceDir = Quaternion.Euler(0f, _trgtAngle, 0f) * Vector3.forward;
-			Vector3 _move = _faceDir.normalized * speed * Time.deltaTime;
-			//If sprinting, multiply by speedSprint as well
-			pController.Move(_move);
+			if (isSprinting)
+			{
+				pController.Move(pMoveVector(1, _direction, speedSprint));
+			}
+			else
+			{
+				pController.Move(pMoveVector(0, _direction, speed));
+			}
 		}
 		if (!isGrounded)
 		{
@@ -51,12 +55,39 @@ public class PMovement : MonoBehaviour
 		}
 	}
 	
-	IEnumerator DodgeKeyHoldTime(float _sprintTime)
+	IEnumerator DodgeKeyHoldTime(float _sprintTime, Vector3 _direction)
 	{
 		float _time = 0f;
 		while (Input.GetKey(keyDodge) && _time < _sprintTime)
 		{
 			_time += Time.deltaTime;
 		}
+
+		if(_time >= _sprintTime)
+		{
+			isSprinting = true;
+		}
+		else
+		{
+			pController.Move(pMoveVector(2, _direction, speedDodge));
+		}
+		yield return null;
+	}
+
+	Vector3 pMoveVector(int _moveType, Vector3 _direction, float _speed)
+	{
+		/* Player Movement Type IDs
+		 * 0 = Walking
+		 * 1 = Sprinting
+		 * 2 = Dodging
+		 */
+		float _trgtAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + pCam.eulerAngles.y;
+		float _angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _trgtAngle, ref turnSmoothVelocity, turnSmoothing);
+		transform.rotation = Quaternion.Euler(0f, _angle, 0f);
+
+		Vector3 _faceDir = Quaternion.Euler(0f, _trgtAngle, 0f) * Vector3.forward;
+		Vector3 _move = _faceDir.normalized * _speed * Time.deltaTime;
+
+		return _move;
 	}
 }

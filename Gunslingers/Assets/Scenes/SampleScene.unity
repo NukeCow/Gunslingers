@@ -178,10 +178,13 @@ MonoBehaviour:
     m_Bits: 8
   groundCheckHeight: 0.01
   groundCheckRadius: 0.5
-  speedDodge: 0
+  speedDodge: 10
+  dodgeKeyHoldTime: 1
+  speedSprint: 9
   pController: {fileID: 27652667}
   pCam: {fileID: 963194228}
   groundCheck: {fileID: 593456747}
+  keyDodge: 304
 --- !u!143 &27652667
 CharacterController:
   m_ObjectHideFlags: 0
