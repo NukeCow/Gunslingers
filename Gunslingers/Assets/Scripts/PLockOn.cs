@@ -14,6 +14,9 @@ public class PLockOn : MonoBehaviour
     [SerializeField] LayerMask targetCheckMask; //The layer the sphere used to find lock on targets will check. Filters out unnecessary colliders.
     [SerializeField] LayerMask targetRayMask; //The layer the raycast to a potential target will check for obstacles. Filters out unnecessary colliders.
     bool isLockedOn = false; //Is the player already locked on to an enemy?
+    List<CharacterController> targetsAvailable = new List<CharacterController>(); //List of potential targets for the player to lock on to
+    CharacterController targetNearest; //The potential target that is closest to the player
+    CharacterController targetCurrent = null; //The player's current target
 
     [Header("Object References")]
     [SerializeField] GameObject pObject; //Reference to the player game object
@@ -35,6 +38,12 @@ public class PLockOn : MonoBehaviour
 			else
 			{
                 FindLockTargets();
+                if(targetNearest != null)
+				{
+                    //Set nearest potential target as our lock on target
+                    SetTarget(targetNearest);
+                    isLockedOn = true;
+				}
 			}
 		}
     }
@@ -58,7 +67,6 @@ public class PLockOn : MonoBehaviour
                 float _targetViewAngle = Vector3.Angle(_targetDir, pCam.transform.forward);
 
                 //If target is dead, continue
-                if (_targetDist > targetMaxDist) continue;
                 if (_targetViewAngle >= targetMinViewAngle && _targetViewAngle <= targetMaxViewAngle)
                 {
                     RaycastHit _hit;
@@ -69,12 +77,34 @@ public class PLockOn : MonoBehaviour
 					}
 					else
 					{
-                        Debug.Log("Target Acquired HAHAHAHAHAHAHHAHAHA!");
+                        targetsAvailable.Add(_target);
 					}
                 }
             }
 		}
         //If not locked on, lock on to closest target
+        for (int k = 0; k < targetsAvailable.Count; k++)
+		{
+            float _targetDist = Vector3.Distance(pObject.transform.position, targetsAvailable[k].transform.position);
+
+            if(_targetDist < _shortDist)
+			{
+                _shortDist = _targetDist;
+                targetNearest = targetsAvailable[k];
+			}
+		}
         //If locked on, find closest target to left or right of current target and lock on to that target
+	}
+
+    public void SetTarget(CharacterController _target)
+	{
+        if(_target != null)
+		{
+            targetCurrent = _target;
+		}
+		else
+		{
+            targetCurrent = null;
+		}
 	}
 }
