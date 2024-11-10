@@ -7,16 +7,16 @@ public class PLockOn : MonoBehaviour
     public int buttonLockOn; //The id for the button assigned to toggling the player's lock on
 
     [Header("Lock On Settings")]
+    public CharacterController targetCurrent = null; //The player's current target
+    public bool isLockedOn = false; //Is the player already locked on to an enemy?
     [SerializeField] float targetCheckRadius; //The radius of the sphere used to find lock on targets. Acts as the maximum distance a potential lock on target can be from the player.
     [SerializeField] float targetMinViewAngle; //The minimum angle from the player a potential target can be to be considered a valid lock on target.
     [SerializeField] float targetMaxViewAngle; //The maximum angle from the player a potential target can be to be considered a valid lock on target.
     [SerializeField] float targetMaxDist; //The maximum distance a lock on target can be from the player.
     [SerializeField] LayerMask targetCheckMask; //The layer the sphere used to find lock on targets will check. Filters out unnecessary colliders.
     [SerializeField] LayerMask targetRayMask; //The layer the raycast to a potential target will check for obstacles. Filters out unnecessary colliders.
-    bool isLockedOn = false; //Is the player already locked on to an enemy?
     List<CharacterController> targetsAvailable = new List<CharacterController>(); //List of potential targets for the player to lock on to
     CharacterController targetNearest; //The potential target that is closest to the player
-    CharacterController targetCurrent = null; //The player's current target
 
     [Header("Object References")]
     [SerializeField] GameObject pObject; //Reference to the player game object
@@ -33,7 +33,8 @@ public class PLockOn : MonoBehaviour
 		{
 			if (isLockedOn)
 			{
-                //Unlock
+                isLockedOn = false;
+                ClearTargets();
 			}
 			else
 			{
@@ -85,12 +86,20 @@ public class PLockOn : MonoBehaviour
         //If not locked on, lock on to closest target
         for (int k = 0; k < targetsAvailable.Count; k++)
 		{
-            float _targetDist = Vector3.Distance(pObject.transform.position, targetsAvailable[k].transform.position);
-
-            if(_targetDist < _shortDist)
+            if(targetsAvailable[k] != null)
 			{
-                _shortDist = _targetDist;
-                targetNearest = targetsAvailable[k];
+                float _targetDist = Vector3.Distance(pObject.transform.position, targetsAvailable[k].transform.position);
+
+                if (_targetDist < _shortDist)
+                {
+                    _shortDist = _targetDist;
+                    targetNearest = targetsAvailable[k];
+                }
+            }
+			else
+			{
+                //Clear Lock On Targets
+                isLockedOn = false;
 			}
 		}
         //If locked on, find closest target to left or right of current target and lock on to that target
@@ -106,5 +115,12 @@ public class PLockOn : MonoBehaviour
 		{
             targetCurrent = null;
 		}
+	}
+
+    public void ClearTargets()
+	{
+        targetNearest = null;
+        targetCurrent = null;
+        targetsAvailable.Clear();
 	}
 }

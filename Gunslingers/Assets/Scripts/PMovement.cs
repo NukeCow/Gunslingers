@@ -25,10 +25,15 @@ public class PMovement : MonoBehaviour
     [SerializeField] CharacterController pController; //Reference to the player's Character Controller component
 	[SerializeField] Transform pCam; //Reference to the player's camera's transform component
 	[SerializeField] Transform groundCheck; //Reference to the ground checker object's transform component
+	PLockOn pLockOn; //Reference to the player's lock on script
 
 	[SerializeField] KeyCode keyDodge; //The key assigned to the Dodge action
 
-	// Update is called once per frame
+	private void Awake()
+	{
+		pLockOn = GetComponent<PLockOn>();
+	}
+
 	void Update()
     {
 		isGrounded = Physics.CheckCapsule(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckHeight, groundCheck.position.z), groundCheckRadius, groundMask);
@@ -42,11 +47,8 @@ public class PMovement : MonoBehaviour
 			if (Input.GetKeyDown(keyDodge)) StartCoroutine(SprintTest(dodgeKeyHoldTime));
 			if (Input.GetKeyUp(keyDodge)) isSprinting = false;
 
-			if (inputDirection.magnitude >= 0.1f)
-			{
-				if (isSprinting) MovePlayer(speedSprint);
-				else MovePlayer(speed);
-			}
+			if (isSprinting) pController.Move(GetPlayerMovementVector(speedSprint));
+			else pController.Move(GetPlayerMovementVector(speed));
 		}
 		if (!isGrounded)
 		{
@@ -80,22 +82,42 @@ public class PMovement : MonoBehaviour
 		float _startTime = Time.time;
 		while (Time.time < _startTime + dodgeTime)
 		{
-			MovePlayer(speedDodge);
+			pController.Move(GetPlayerMovementVector(speedDodge));
 			yield return null;
 		}
 		canControl = true;
 		isSprinting = false;
 	}
 
-	void MovePlayer(float _speed)
+	public Vector3 GetPlayerMovementVector(float _speed)
 	{
-		float _trgtAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + pCam.eulerAngles.y;
-		float _angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _trgtAngle, ref turnSmoothVelocity, turnSmoothing);
+		float _targetMoveAngle = 0f;
+		if (inputDirection.magnitude >= 0.1f)
+		{
+			_targetMoveAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + pCam.eulerAngles.y;
+		}
+		else
+		{
+			_targetMoveAngle = transform.rotation.eulerAngles.y;
+			_speed = 0f;
+		}
+		float _angle = 0f;
+		if (pLockOn.isLockedOn)
+		{
+			//Lock On Rotation
+			Vector3 _targetFaceDir = pLockOn.targetCurrent.transform.position - transform.position;
+			float _targetFaceAngle = Mathf.Atan2(_targetFaceDir.x, _targetFaceDir.z) * Mathf.Rad2Deg;
+			_angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetFaceAngle, ref turnSmoothVelocity, turnSmoothing);
+		}
+		else
+		{
+			//Free Look Rotation
+			_angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetMoveAngle, ref turnSmoothVelocity, turnSmoothing);
+		}
 		transform.rotation = Quaternion.Euler(0f, _angle, 0f);
 
-		Vector3 _faceDir = Quaternion.Euler(0f, _trgtAngle, 0f) * Vector3.forward;
+		Vector3 _faceDir = Quaternion.Euler(0f, _targetMoveAngle, 0f) * Vector3.forward;
 		Vector3 _move = _faceDir.normalized * _speed * Time.deltaTime;
-
-		pController.Move(_move);
+		return _move;
 	}
 }
