@@ -220,6 +220,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonLockOn: 2
+  targetCurrent: {fileID: 0}
+  isLockedOn: 0
   targetCheckRadius: 10
   targetMinViewAngle: -50
   targetMaxViewAngle: 50
@@ -4007,7 +4009,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 380620129}
   m_LocalRotation: {x: -0.003750462, y: -0.19748485, z: -0.0007555373, w: 0.9802985}
-  m_LocalPosition: {x: -0.000000011469979, y: 0.0000027736241, z: -0.0000032747744}
+  m_LocalPosition: {x: -0.00000008794393, y: 0.0000018406247, z: -0.0000030926794}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2083573082}
@@ -9952,6 +9954,7 @@ GameObject:
   - component: {fileID: 2136911949}
   - component: {fileID: 2136911951}
   - component: {fileID: 2136911950}
+  - component: {fileID: 2136911952}
   m_Layer: 0
   m_Name: Player Camera Controller
   m_TagString: Untagged
@@ -10044,3 +10047,15 @@ MonoBehaviour:
     m_ParentHash: 756556552
   - m_Hash: -543130990
     m_ParentHash: 756556552
+--- !u!114 &2136911952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136911948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda71b963fd497945a4a7348db8fd4b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
