@@ -22,6 +22,7 @@ public class PLockOn : MonoBehaviour
     [SerializeField] GameObject pObject; //Reference to the player game object
     [SerializeField] GameObject pCam; //Reference to the player's camera game object
     [SerializeField] GameObject pGFX; //Reference to the player's graphics game object
+    [SerializeField] PCamera pCamController; //Reference to the camera controller script for the player's camera
 
     // Update is called once per frame
     void Update()
@@ -35,6 +36,7 @@ public class PLockOn : MonoBehaviour
 			{
                 isLockedOn = false;
                 ClearTargets();
+                pCamController.UnlockCamera();
 			}
 			else
 			{
@@ -43,6 +45,7 @@ public class PLockOn : MonoBehaviour
 				{
                     //Set nearest potential target as our lock on target
                     SetTarget(targetNearest);
+                    pCamController.LockCameraToTarget(targetCurrent.transform);
                     isLockedOn = true;
 				}
 			}

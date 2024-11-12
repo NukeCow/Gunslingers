@@ -235,6 +235,7 @@ MonoBehaviour:
   pObject: {fileID: 27652664}
   pCam: {fileID: 963194225}
   pGFX: {fileID: 56390415}
+  pCamController: {fileID: 2136911952}
 --- !u!114 &27652669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7572,36 +7573,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 55.929, y: -30, z: 0}
---- !u!1 &812813128
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 812813129}
-  m_Layer: 0
-  m_Name: Lockon Target
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &812813129
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812813128}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &829637165
 GameObject:
   m_ObjectHideFlags: 0
@@ -8044,7 +8015,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1051037860}
   m_LocalRotation: {x: 0.36156198, y: 0.6387633, z: -0.48415968, w: 0.47628126}
-  m_LocalPosition: {x: -12.338692, y: 12.487885, z: 3.7027092}
+  m_LocalPosition: {x: -10.261315, y: 9.543467, z: 3.0831861}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1217018888}
@@ -8069,7 +8040,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 812813129}
+  m_LookAt: {fileID: 0}
   m_Follow: {fileID: 27652665}
   m_Lens:
     FieldOfView: 40
@@ -8221,8 +8192,8 @@ MonoBehaviour:
   m_ZDamping: 1
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
-  m_ScreenY: 0.5
-  m_CameraDistance: 10
+  m_ScreenY: 0.77
+  m_CameraDistance: 6.58
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -10059,3 +10030,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda71b963fd497945a4a7348db8fd4b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraStateLockOnName: Lock On
+  stateController: {fileID: 2136911950}
+  lockOnCamera: {fileID: 1051037862}
