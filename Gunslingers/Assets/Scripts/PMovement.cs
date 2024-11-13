@@ -29,11 +29,13 @@ public class PMovement : MonoBehaviour
 
 	[SerializeField] KeyCode keyDodge; //The key assigned to the Dodge action
 
+	//Called when the script is loaded
 	private void Awake()
 	{
 		pLockOn = GetComponent<PLockOn>();
 	}
 
+	//Called every frame
 	void Update()
     {
 		isGrounded = Physics.CheckCapsule(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckHeight, groundCheck.position.z), groundCheckRadius, groundMask);
@@ -57,6 +59,7 @@ public class PMovement : MonoBehaviour
 		}
 	}
 	
+	//Starts a sprint if the player holds the dodge button for the given time or dodges if the player lets go of the dodge button after a shorter amount of time than the given time.
 	IEnumerator SprintTest(float _sprintTime)
 	{
 		float _startTime = Time.time;
@@ -77,6 +80,7 @@ public class PMovement : MonoBehaviour
 		yield return null;
 	}
 
+	//Makes the player dodge
 	IEnumerator Dodge()
 	{
 		float _startTime = Time.time;
@@ -89,6 +93,7 @@ public class PMovement : MonoBehaviour
 		isSprinting = false;
 	}
 
+	//Returns the direction and speed of the player's movement given a speed to move the player
 	public Vector3 GetPlayerMovementVector(float _speed)
 	{
 		float _targetMoveAngle = 0f;
@@ -102,7 +107,7 @@ public class PMovement : MonoBehaviour
 			_speed = 0f;
 		}
 		float _angle = 0f;
-		if (pLockOn.isLockedOn)
+		if (pLockOn.isLockedOn && !isSprinting)
 		{
 			//Lock On Rotation
 			Vector3 _targetFaceDir = pLockOn.targetCurrent.transform.position - transform.position;

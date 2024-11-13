@@ -14,6 +14,7 @@ public class PCamera : MonoBehaviour
 	[SerializeField] Animator stateController; //Reference to the Animator Component for the Player Camera Controller
 	[SerializeField] CinemachineVirtualCamera lockOnCamera; //Reference to the player's virtual lock on camera
 
+	//Locks the player's camera to the given target's transform component
 	public void LockCameraToTarget(Transform _target)
 	{
 		lockOnCamera.LookAt = _target;
@@ -24,6 +25,7 @@ public class PCamera : MonoBehaviour
 		}
 	}
 
+	//Returns the player's camera to free look mode
 	public void UnlockCamera()
 	{
 		if (isLockedOn)

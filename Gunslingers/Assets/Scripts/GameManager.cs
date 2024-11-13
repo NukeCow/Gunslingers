@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //Called before all Update methods on the first frame
     void Start()
     {
         Cursor.visible = false;

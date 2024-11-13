@@ -220,12 +220,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonLockOn: 2
+  lockOnTargetChange: Mouse X
+  targetChangeInputThreshold: 1
+  changeTargetInputTime: 0.5
   targetCurrent: {fileID: 0}
   isLockedOn: 0
-  targetCheckRadius: 10
+  targetCheckRadius: 20
   targetMinViewAngle: -50
   targetMaxViewAngle: 50
-  targetMaxDist: 10
+  targetMaxDist: 20
   targetCheckMask:
     serializedVersion: 2
     m_Bits: 64
@@ -4010,7 +4013,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 380620129}
   m_LocalRotation: {x: -0.003750462, y: -0.19748485, z: -0.0007555373, w: 0.9802985}
-  m_LocalPosition: {x: -0.00000008794393, y: 0.0000018406247, z: -0.0000030926794}
+  m_LocalPosition: {x: 0.00000007647396, y: 0.00000093299946, z: -0.00000018209468}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2083573082}
@@ -10031,5 +10034,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraStateLockOnName: Lock On
+  cameraStateFreeLookName: Free Look
   stateController: {fileID: 2136911950}
   lockOnCamera: {fileID: 1051037862}
