@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PLockOn : MonoBehaviour
 {
-    public int buttonLockOn; //The id for the button assigned to toggling the player's lock on
+    [Header("Lock On Controls")]
+    [SerializeField] int buttonLockOn; //The id for the button assigned to toggling the player's lock on
+    [SerializeField] string lockOnTargetChange = "Mouse X"; //The name of the axis assigned to searching for another lock on target while the player is already locked on
 
     [Header("Lock On Settings")]
     public CharacterController targetCurrent = null; //The player's current target
@@ -27,8 +29,12 @@ public class PLockOn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Check if current target is dead
-        //If current target is dead, try to find new target and lock on to it. Otherwise, unlock
+		//Check if current target is dead
+		//If current target is dead, try to find new target and lock on to it. Otherwise, unlock
+		if (Mathf.Abs(Input.GetAxisRaw(lockOnTargetChange)) >= 0.1f && isLockedOn)
+		{
+
+		}
 
         if (Input.GetMouseButtonDown(buttonLockOn))
 		{
